@@ -1,0 +1,13 @@
+INSERT INTO Playlist(playlistId, username, playlistName, createdOn) VALUES (1, 'preep', 'Chainsaw', TO_DATE('01/10/2018', 'MM/DD/YYYY'));
+INSERT INTO Playlist(playlistId, username, playlistName, createdOn) VALUES (2, 'bhavu88', 'Sad', TO_DATE('10/10/2017', 'MM/DD/YYYY'));
+INSERT INTO Playlist(playlistId, username, playlistName, createdOn) VALUES (3, 'shivu001', 'Petals', TO_DATE('11/29/2016', 'MM/DD/YYYY'));
+INSERT INTO Playlist(playlistId, username, playlistName, createdOn) VALUES (4, 'kajju58', 'Morning', TO_DATE('07/16/2015', 'MM/DD/YYYY'));
+INSERT INTO Playlist(playlistId, username, playlistName, createdOn) VALUES (5, 'Happy34', 'Acoustic', TO_DATE('01/04/2018', 'MM/DD/YYYY'));
+INSERT INTO Playlist(playlistId, username, playlistName, createdOn) VALUES (6, 'Chotu234', 'My Mix', TO_DATE('01/16/2018', 'MM/DD/YYYY'));
+INSERT INTO Playlist(playlistId, username, playlistName, createdOn) VALUES (7, 'moo89', 'Cafe', TO_DATE('05/14/2009', 'MM/DD/YYYY'));
+INSERT INTO Playlist(playlistId, username, playlistName, createdOn) VALUES (8, 'kajju58', 'Loud', TO_DATE('04/30/2019', 'MM/DD/YYYY'));
+INSERT INTO Playlist(playlistId, username, playlistName, createdOn) VALUES (9, 'zoy777', 'Piano', TO_DATE('10/28/2017', 'MM/DD/YYYY'));
+INSERT INTO Playlist(playlistId, username, playlistName, createdOn) VALUES (10, 'wolf1010', 'Workout', TO_DATE('03/14/2018', 'MM/DD/YYYY'));
+INSERT INTO Playlist(playlistId, username, playlistName, createdOn) VALUES (11, 'Tex60', 'Study', TO_DATE('01/03/2018', 'MM/DD/YYYY'));
+INSERT INTO Playlist(playlistId, username, playlistName, createdOn) VALUES (12, 'phob78', 'Night', TO_DATE('05/09/2010', 'MM/DD/YYYY'));
+INSERT INTO Playlist(playlistId, username, playlistName, createdOn) VALUES (13, 'dolly444', 'Road Trip', TO_DATE('11/17/2019', 'MM/DD/YYYY'));

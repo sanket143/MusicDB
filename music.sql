@@ -1,0 +1,160 @@
+create schema music;
+set search_path to music;
+
+CREATE TABLE Users (
+	username VARCHAR(50) NOT NULL,
+	password VARCHAR(100) NOT NULL,
+	firstname VARCHAR(50) NOT NULL,
+	lastname VARCHAR(50) NOT NULL,
+	email VARCHAR(40) NOT NULL,
+	gender VARCHAR(10) NOT NULL,
+	country VARCHAR(100) NOT NULL,
+	age INTEGER NOT NULL,
+	joindate DATE NOT NULL,
+	isPremium BOOLEAN NOT NULL,
+	profilePicUrl VARCHAR(100),
+
+	PRIMARY KEY(username)
+);
+
+CREATE TABLE Album (
+	albumId INT NOT NULL,
+	albumName VARCHAR(50) NOT NULL,
+	numberOfSongs INT,
+	releaseDate DATE,
+	
+	PRIMARY KEY (albumId)
+);
+
+CREATE TABLE Playlist (
+	playlistId INT,
+	username VARCHAR(100),
+	playlistName VARCHAR(100),
+	createdOn DATE,
+	
+	PRIMARY KEY (playlistId),
+	FOREIGN KEY (username) REFERENCES Users(username) ON DELETE CASCADE
+);
+
+CREATE TABLE Artist (
+    artistId INTEGER NOT NULL,
+    artistName VARCHAR(100) NOT NULL,
+    briefBio TEXT,
+    ranking INTEGER,
+	
+	PRIMARY KEY (artistID)
+);
+
+CREATE TABLE Song (
+	songId INT NOT NULL,
+	songName VARCHAR(100) NOT NULL,
+	language VARCHAR(20) NOT NULL,
+	duration NUMERIC,
+	
+	PRIMARY KEY (songId)
+);
+
+CREATE TABLE PreferredLanguages (
+	username VARCHAR(50) NOT NULL,
+	language VARCHAR(20) NOT NULL,
+	
+	PRIMARY KEY (username, language),
+	FOREIGN KEY (username) REFERENCES Users(username) ON DELETE CASCADE
+);
+
+CREATE TABLE PlaylistKeywords (
+	playlistId INT NOT NULL,
+	pkeyword VARCHAR(100) NOT NULL,
+	
+	PRIMARY KEY (playlistId, pkeyword),
+	FOREIGN KEY (playlistId) REFERENCES Playlist(playlistId) ON DELETE CASCADE
+);
+
+CREATE TABLE ArtistKeywords (
+	artistId INT NOT NULL,
+	akeyword VARCHAR(100) NOT NULL,
+	
+	PRIMARY KEY (artistId, akeyword),
+	FOREIGN KEY (artistId) REFERENCES Artist(artistId) ON DELETE CASCADE
+);
+
+CREATE TABLE AlbumKeywords (
+	albumId INT NOT NULL,
+	akeyword VARCHAR(100) NOT NULL,
+	
+	PRIMARY KEY (albumId, akeyword),
+	FOREIGN KEY (albumId) REFERENCES Album(albumId) ON DELETE CASCADE
+);
+
+CREATE TABLE SongKeywords (
+	songId INT NOT NULL,
+	skeyword VARCHAR(100) NOT NULL,
+	
+	PRIMARY KEY (songId, skeyword),
+	FOREIGN KEY (songId) REFERENCES Song(songId) ON DELETE CASCADE
+);
+
+CREATE TABLE Genre (
+	songId INT NOT NULL,
+	sgenre VARCHAR(100) NOT NULL,
+	
+	PRIMARY KEY (songId, sgenre),
+	FOREIGN KEY (songId) REFERENCES Song(songId) ON DELETE CASCADE
+);
+
+CREATE TABLE SongBy (
+	songId INT NOT NULL,
+	artistId INT NOT NULL,
+	label VARCHAR(30),
+	releaseDate DATE NOT NULL,
+	
+	PRIMARY KEY (songId, artistId),
+	FOREIGN KEY (songId) REFERENCES Song(songId) ON DELETE CASCADE,
+	FOREIGN KEY (artistId) REFERENCES Artist(artistId) ON DELETE CASCADE
+);
+
+CREATE TABLE ListenBy (
+	songId INT NOT NULL,
+	username VARCHAR(100) NOT NULL,
+	
+	PRIMARY KEY (songId, username),
+	FOREIGN KEY (songId) REFERENCES Song(songId) ON DELETE CASCADE,
+	FOREIGN KEY (username) REFERENCES Users(username) ON DELETE SET NULL
+);
+
+CREATE TABLE isInPlaylist (
+	playlistId INT NOT NULL,
+	songId INT NOT NULL,
+	
+	PRIMARY KEY (playlistId, songId),
+	FOREIGN KEY (songId) REFERENCES Song(songId) ON DELETE CASCADE,
+	FOREIGN KEY (playlistId) REFERENCES Playlist(playlistId) ON DELETE CASCADE
+);
+
+CREATE TABLE FollowedBy (
+	username VARCHAR(100) NOT NULL,
+	follower VARCHAR(100) NOT NULL,
+	
+	PRIMARY KEY (username, follower),
+	FOREIGN KEY (username) REFERENCES Users(username) ON DELETE CASCADE,
+	FOREIGN KEY (follower) REFERENCES Users(username) ON DELETE CASCADE
+);
+
+CREATE TABLE SubscribesTo (
+	username VARCHAR(100) NOT NULL,
+	artistId INT NOT NULL,
+	
+	PRIMARY KEY (username, artistId),
+	FOREIGN KEY (username) REFERENCES Users(username) ON DELETE CASCADE,
+	FOREIGN KEY (artistId) REFERENCES Artist(artistId) ON DELETE CASCADE
+);
+
+CREATE TABLE isInAlbum (
+	songId INT NOT NULL,
+	artistId INT NOT NULL,
+	albumId INT NOT NULL,
+	
+	PRIMARY KEY (songId, artistId, albumId),
+	FOREIGN KEY (songId, artistId) REFERENCES SongBy(songId, artistId) ON DELETE CASCADE,
+	FOREIGN KEY (albumId) REFERENCES Album(albumId) ON DELETE CASCADE
+);

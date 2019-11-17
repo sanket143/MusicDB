@@ -1,0 +1,237 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <libpq-fe.h>
+#include <string.h>
+#include <unistd.h>
+#include<stdbool.h>
+#include<sqlda.h>
+int x;
+char q[128],temp;
+enum Education{Illiterate,Dropout,UnderGraduate,PostGraduate};
+PGresult *res;
+PGconn *conn;
+
+void insert_choice() {
+	int choice;
+	char query[250],buf[20],c;
+	printf("WHERE DO YOU WANT TO INSERT?\n1. Prisoner\n2. Prison\n3. Court\n4. Other\n");
+	printf("Choose the entity: ");
+	scanf("%d",&choice);
+	c=getchar();
+	switch(choice){
+		case 1:{
+			char Name[30],Gender[1],Nationality[20],query1[250];
+			int PrisonerID,mm,dd,yyyy;
+                        enum Education status;
+			printf("Name: ");
+			scanf ("%[^\n]%*c", Name);
+			printf("Gender: ");
+			scanf ("%[^\n]%*c", Gender);
+			printf("Enter date (mm-dd-yyyy) format: ");
+                        scanf("[^\n]%d/%d/%d",&mm,&dd,&yyyy);
+                        printf("Nationality: ");
+			scanf ("%[^\n]%*c",Nationality);
+
+			
+			strcpy(query,"Insert into PrisonerDetails  (");			
+			res = PQexec(conn, "select max(PrisonerID) from PrisonerDetails;");
+			if (PQresultStatus(res) != PGRES_TUPLES_OK) {
+       				printf("Failed to assign PrisonerDetails!\n");
+        			PQclear(res);
+    			}
+			else{
+				strcpy(PrisonerID,PQgetvalue(res, 0, 0));
+				PrisonerID=PrisonerID+1;
+			}
+			fflush(stdout);
+		
+			/*CODE TO GENERATE INSERT QUERY IN BACK GROUND*/
+			sprintf(buf,"%d",ieeeno);
+			strcat(query, buf);
+			strcat(query,",'");
+			strcat(query,Name);
+			strcat(query,"','");
+			strcat(query,Gender);
+			strcat(query,"',");
+			sprintf(buf,"%%d/%d/%d",date);
+			strcat(query,buf);
+			strcat(query,",");
+			strcat(query,s);			
+			strcat(query,");");
+			/*CODE TO RUN QUERY*/
+			res = PQexec(conn, query);
+		    	if(PQresultStatus(res) != PGRES_COMMAND_OK) {
+				printf("\nError: %s\n",PQerrorMessage(conn));
+    			}
+			else {
+				printf("AUTO-GENERATED INSERT STATEMENT ran Successfully!\n");
+			}
+    			PQclear(res);
+			break;
+		}
+		case 2:{
+			char PrisonName[50],Warden[30],Location[20];
+                        int PrisonId,Capacity;
+                        printf("PrisonID: ");
+			scanf ("%[^\n]%*d", PrisonID);
+                        printf("PrisonName: ");
+			scanf ("%[^\n]%*c", PrisonName);
+                        printf("Warden: ");
+			scanf ("%[^\n]%*c", Warden);
+			printf("Capacity: ");
+			scanf ("%[^\n]%*d", Capacity);
+                        printf("Location: ");
+			scanf ("%[^\n]%*c", Location);
+
+
+			strcpy(query,"insert into PrisonDetails  ('");
+			strcat(query, Prisonid);
+			strcat(query,"','");
+			strcat(query,PrisonName);
+			strcat(query,"');");
+                        strcat(query, Warden);
+			strcat(query,"','");
+                        strcat(query, Capacity);
+			strcat(query,"','");
+                        strcat(query, Location);
+			strcat(query,"','");
+                         
+			printf("%s\n",query);
+			res = PQexec(conn, query);
+		    	if(PQresultStatus(res) != PGRES_COMMAND_OK) {
+				printf("\nError: %s\n",PQerrorMessage(conn));
+    			}
+			else {
+				printf("AUTO-GENERATED INSERT STATEMENT ran Successfully!\n");
+			}
+    			PQclear(res);
+			break;	
+		}
+		case 3:{
+			char CourtName[50],Judge[30];
+			printf("CourtName: ");
+			scanf ("%[^\n]%*c", CourtName);
+			printf("Judge: ");
+			scanf ("%[^\n]%*c", JUdge);
+			strcpy(query,"insert into CourtDetails  ('");
+			strcat(query, CourtName);
+			strcat(query,"','");
+			strcat(query,Judge);
+			strcat(query,"');");
+			printf("%s\n",query);
+			res = PQexec(conn, query);
+		    	if(PQresultStatus(res) != PGRES_COMMAND_OK) {
+				printf("\nError: %s\n",PQerrorMessage(conn));
+    			}
+			else {
+				printf("AUTO-GENERATED INSERT STATEMENT ran Successfully!\n");
+			}
+    			PQclear(res);
+			break;	
+		}
+		case 4:{
+			printf("Write Insert Statement: ");
+        		scanf("%[^\n]s",q);
+    			res = PQexec(conn, q);
+    			if(PQresultStatus(res) != PGRES_COMMAND_OK) {
+				printf("\nError: %s\n",PQerrorMessage(conn));
+		    	}
+			else {
+				printf("Insert Statement ran Successfully!\n");
+			}
+		    	PQclear(res);
+			break;
+		}
+		default:{
+			printf("Please choose from choices given above.\n");
+		}
+	}	
+}
+void delete_choice(){
+	printf("Write Delete Statement: ");
+	scanf("%c",&temp);
+        scanf("%[^\n]s",q);
+    	res = PQexec(conn, q);
+    	if(PQresultStatus(res) != PGRES_COMMAND_OK) {
+		printf("\nError: %s\n",PQerrorMessage(conn));
+    	}
+	else {
+		printf("Delete Statement ran Successfully!\n");
+	}
+    	PQclear(res);
+}
+void update_choice(){
+	printf("Write Update Statement: ");
+	scanf("%c",&temp);
+        scanf("%[^\n]s",q);
+    	res = PQexec(conn, q);
+    	if(PQresultStatus(res) != PGRES_COMMAND_OK) {
+		printf("\nError: %s\n",PQerrorMessage(conn));
+    	}
+	else {
+		printf("Update Statement ran Successfully!\n");
+	}
+    	PQclear(res);
+}
+void select_query() {
+	printf("Enter Select Query: ");
+	scanf("%c",&temp);
+	scanf("%[^\n]s",q);
+    	res = PQexec(conn, q);
+    	if (PQresultStatus(res) != PGRES_TUPLES_OK) {
+        	printf("No data retrieved\n");
+        	PQclear(res);
+    	}
+    	else {
+    		int rows = PQntuples(res);
+		int cols = PQnfields(res);
+    		printf("\n");
+    		for(int i=0; i<rows; i++) {
+    			for (int j=0;j<cols;j++) {
+				printf("%s\t",PQgetvalue(res, i, j));
+    			}
+			printf("\n");
+		}
+	}
+    	PQclear(res);
+}
+int main() {
+    	conn = PQconnectdb("user=postgres password=super_spider dbname=postgres");
+	if (PQstatus(conn) == CONNECTION_BAD) {
+        	fprintf(stderr, "Connection to database failed: %s\n",
+            	PQerrorMessage(conn));
+		exit(1);
+    	}
+	printf("CONNECTED TO DATABASE!\n");
+	PQexec(conn, "set search_path to ieee;");
+	printf("SEARCH_PATH SET!\n");
+	printf("\nChoose Option: \n");
+	printf("1. Insert\n");
+	printf("2. Update\n");
+	printf("3. Delete\n");	
+	printf("4. Query\n");
+	printf("0. Exit\n\n");
+	printf("Enter Option: ");
+	fflush(stdin);
+	
+	scanf("%d",&x);
+	while(x){
+		if (x==1) insert_choice();
+		else if (x==2) update_choice();
+		else if (x==3) delete_choice();	
+		else if(x==4)	select_query();
+
+		printf("\n\nChoose Option: \n");
+		printf("1. Insert\n");
+		printf("2. Update\n");
+		printf("3. Delete\n");	
+		printf("4. Query\n");
+		printf("0. Exit\n\n");
+		printf("Enter Option: ");
+		fflush(stdin);
+
+		scanf("%d",&x);
+	}
+    	PQfinish(conn);
+	return 0;
+}
